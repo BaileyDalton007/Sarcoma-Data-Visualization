@@ -1,8 +1,6 @@
 import csv
 import datetime
 
-begin_time = datetime.datetime.now()
-
 def getFullData():
     data = []
     with open('SARC_LMS_256_10_val_imgnet_pred_fc3_features.csv') as csv_file:
@@ -22,8 +20,4 @@ def getEmbedData():
     em_data = []
     for i in range(len(data)):
             em_data.append(data[i][-256:])
-
     return em_data, data
-
-getFullData()
-print(f'CSV read time: {datetime.datetime.now() - begin_time}')

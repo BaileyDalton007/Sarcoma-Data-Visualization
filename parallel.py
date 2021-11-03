@@ -1,6 +1,6 @@
 # this graph is unreadable
 
-import pandas
+import pandas as pd
 import matplotlib.pyplot as plt
 from pandas.plotting import parallel_coordinates
 
@@ -18,10 +18,9 @@ for i in range(len(data)):
     else:
         em_data[i].insert(0, gt_data[i]) # insterts heading as a string
 
-em_df = pandas.DataFrame(em_data[1:], columns = em_data[0])
-gt_df = em_df.iloc[:,0]
+em_df = pd.DataFrame(em_data[1:], columns = em_data[0])
 
 sub_df = em_df.iloc[0:100,] # copies embed data to be cut down and graphed
 
-pandas.plotting.parallel_coordinates(sub_df, class_column="gt")
+pd.plotting.parallel_coordinates(sub_df, class_column="gt")
 plt.show()
