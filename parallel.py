@@ -4,9 +4,11 @@ import pandas
 import matplotlib.pyplot as plt
 from pandas.plotting import parallel_coordinates
 
-from load import data, em_data
+from load import getEmbedData
 
 gt_data = []
+
+em_data, data = getEmbedData()
 
 for i in range(len(data)):
     gt_data.append(data[i][2])     # extracts the ground truth column
