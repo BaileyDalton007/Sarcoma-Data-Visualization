@@ -1,27 +1,39 @@
-import csv
-import datetime
+import pandas as pd
 
-def getFullData():
-    data = []
-    with open('SARC_LMS_256_10_val_imgnet_pred_fc3_features.csv') as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter=',')
-        line_count = 0
-        for row in csv_reader:
-            data.append(row)
+# input data file
+file = 'SARC_LMS_256_10_val_imgnet_pred_fc6_features.csv'
 
-        for i in range(len(data)): # fixes first and last embed being a string instead of a float
-            if i > 0:
-                data[i][8] = float(data[i][8].replace("[", ""))
-                data[i][263] = float(data[i][263].replace("]", ""))
-    return data
+def numerize(item):
+    return float(item.replace("[","").replace("]","")) # fixes first and last embeds being loaded as strings
 
-def getEmbedData(confidence):
-    data = getFullData()
-    em_data = []
-    for i in range(len(data)):
-            if i > 0:
-                if float(data[i][4]) >= confidence:
-                    em_data.append(data[i][-256:])
-            else:
-                em_data.append(data[i][-256:])
-    return em_data, data
+def getData(confidence):
+    # loading script written by Asmaa
+    csv_df = pd.read_csv(file)
+    file_name = file
+    
+    test_prob = csv_df.iloc[:, 3]
+
+    indices = []
+    for i in range(len(test_prob)):
+         if test_prob[i] >= confidence:
+             indices.append(i)
+
+    pred_prob = csv_df.iloc[indices, 3].reset_index(drop=True)
+    images = csv_df.iloc[indices, 0].reset_index(drop=True)
+    gt = csv_df.iloc[indices, 1].reset_index(drop=True)
+    pred_class = csv_df.iloc[indices, 2].reset_index(drop=True)
+
+    n_classes = 3
+    probs = csv_df.iloc[indices, 4:(4 + n_classes)].reset_index(drop=True)
+    features = csv_df.iloc[indices, 4 + n_classes:].reset_index(drop=True)
+
+    columns = []
+    for col in features.columns:
+        columns.append(col)
+
+    features.iloc[:, 0] = features.iloc[:, 0].apply(numerize)
+    features.iloc[:, len(columns)-1] = features.iloc[:, len(columns)-1].apply(numerize)
+
+    return images, gt, pred_class, pred_prob, probs, features, columns, file_name
+
+getData(0.9)
