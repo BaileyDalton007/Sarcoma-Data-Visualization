@@ -9,8 +9,8 @@ from sklearn.manifold import TSNE
 from load import getEmbedData
 
 # amount of random points plotted
-max_size = 50000
-em_data, data = getEmbedData()
+max_size = 30000
+em_data, data = getEmbedData(0.99)
 gt_data = []
 
 for i in range(len(data)):
