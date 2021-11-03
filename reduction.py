@@ -15,11 +15,6 @@ gt_data = []
 
 for i in range(len(data)):
     gt_data.append(data[i][2])     # extracts the ground truth column
-    
-#    if i != 0:
-#        em_data[i].insert(0, int(gt_data[i]))
-#    else:
-#        em_data[i].insert(0, gt_data[i]) # insterts heading as a string
 
 em_data = em_data[:max_size]
 em_df = pd.DataFrame(em_data[1:], columns = em_data[0])
