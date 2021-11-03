@@ -17,6 +17,9 @@ for i in range(len(data)):
         em_data[i].insert(0, gt_data[i]) # insterts heading as a string
 
 em_df = pandas.DataFrame(em_data[1:], columns = em_data[0])
+gt_df = em_df.iloc[:,0]
 
-pandas.plotting.parallel_coordinates(em_df, class_column="gt")
+sub_df = em_df.iloc[0:100,] # copies embed data to be cut down and graphed
+
+pandas.plotting.parallel_coordinates(sub_df, class_column="gt")
 plt.show()
