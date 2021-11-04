@@ -9,7 +9,7 @@ from sklearn.manifold import TSNE
 from load import getData
 
 # amount of random points plotted
-images, gt, pred_class, pred_prob, probs, features, columns, file_name = getData(0.99)
+images, gt, pred_class, pred_prob, probs, features, columns, file_name = getData(0.9)
 
 # For reproducability of the results
 np.random.seed(42)
@@ -25,7 +25,7 @@ features['pca-three'] = pca_result[:,2]
 #plt.figure(figsize=(16,10))
 #sns.scatterplot(
 #    x="pca-one", y="pca-two",
-#    hue=gt,
+#    hue=pred_class,
 #    palette=sns.color_palette("hls", 3),
 #    data=features.loc[rndperm,:],
 #    legend="full",
@@ -34,12 +34,12 @@ features['pca-three'] = pca_result[:,2]
 
 # 3-D Graph
 color_map = []
-for i in range(len(gt)):
-    if int(gt[i]) == 0:
+for i in range(len(pred_class)):
+    if int(pred_class[i]) == 0:
         color_map.append((1, 0, 0, 1))
-    if int(gt[i]) == 1:
+    if int(pred_class[i]) == 1:
         color_map.append((0, 1, 0, 0.5))
-    if int(gt[i]) == 2:
+    if int(pred_class[i]) == 2:
         color_map.append((0, 0, 1, 1))
 
 ax = plt.figure(figsize=(16,10)).gca(projection='3d')
@@ -53,6 +53,7 @@ ax.scatter(
 ax.set_xlabel('pca-one')
 ax.set_ylabel('pca-two')
 ax.set_zlabel('pca-three')
+
 ax.set_title(file_name)
 
 plt.show()

@@ -33,7 +33,4 @@ def getData(confidence):
 
     features.iloc[:, 0] = features.iloc[:, 0].apply(numerize)
     features.iloc[:, len(columns)-1] = features.iloc[:, len(columns)-1].apply(numerize)
-
     return images, gt, pred_class, pred_prob, probs, features, columns, file_name
-
-getData(0.9)
