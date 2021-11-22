@@ -8,7 +8,7 @@ from load import getData
 # amount of random points plotted
 images, gt, pred_class, pred_prob, probs, features, columns, file_name = getData(0.9)
 
-tsne = TSNE(n_components=2, verbose=1, perplexity=60, n_iter=300)
+tsne = TSNE(n_components=2, verbose=1, perplexity=60, n_iter=300, random_state=0) # random state constant for reproducability
 tsne_results = tsne.fit_transform(features[columns].values)
 
 features['tsne-2d-one'] = tsne_results[:,0]
