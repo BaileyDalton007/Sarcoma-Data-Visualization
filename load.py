@@ -1,22 +1,38 @@
 import pandas as pd
 
 # input data file
-file = 'SARC_LMS_256_10_val_imgnet_pred_fc6_features.csv'
+file = 'SARC_LMS_256_10_val_histossl_pred_fc3_features.csv'
 
 def numerize(item):
     return float(item.replace("[","").replace("]","")) # fixes first and last embeds being loaded as strings
 
-def getData(confidence):
+def getData(confidence, group_size):
     # loading script written by Asmaa
     csv_df = pd.read_csv(file)
     file_name = file
     
+    test_gt = csv_df.iloc[:, 1]
+    test_pred_class = csv_df.iloc[:, 2]
     test_prob = csv_df.iloc[:, 3]
+
+    count_0, count_1, count_2 = 0, 0, 0
 
     indices = []
     for i in range(len(test_prob)):
          if test_prob[i] >= confidence:
-             indices.append(i)
+            if test_pred_class[i] == 0 and count_0 < group_size:
+                count_0 += 1
+                indices.append(i)
+            elif test_pred_class[i] == 1 and count_1 < group_size:
+                count_1 += 1
+                indices.append(i)
+            elif test_pred_class[i] == 2 and count_2 < group_size:
+                count_2 += 1
+                indices.append(i)
+
+    print(f'count_0: {count_0}')
+    print(f'count_1: {count_1}')
+    print(f'count_2: {count_2}')
 
     pred_prob = csv_df.iloc[indices, 3].reset_index(drop=True)
     images = csv_df.iloc[indices, 0].reset_index(drop=True)
