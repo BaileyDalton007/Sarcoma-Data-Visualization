@@ -21,7 +21,7 @@ def reduction(features, columns):
     return features
 
 def showGraph():
-    images, gt, pred_class, pred_prob, probs, features, columns, file_name = getData(0.99)
+    images, gt, pred_class, pred_prob, probs, features, columns, file_name = getData(0.9999)
     features = reduction(features, columns)
 
     plt.figure(figsize=(16,10))
